@@ -1,0 +1,16 @@
+# ─── eta-route-app 필요 라이브러리 ───
+#
+# 설치 명령어: pip install -r requirements.txt
+#
+# 각 라이브러리 설명:
+# - streamlit:        웹 앱 프레임워크 (UI 전체를 담당)
+# - requests:         HTTP 요청 (API 호출에 사용)
+# - pandas:           데이터 처리 (테이블/DataFrame)
+# - folium:           지도 시각화 (Leaflet.js 기반)
+# - streamlit-folium: Streamlit 안에 Folium 지도를 표시하는 연동 라이브러리
+
+streamlit>=1.30.0
+requests>=2.31.0
+pandas>=2.1.0
+folium>=0.15.0
+streamlit-folium>=0.18.0
