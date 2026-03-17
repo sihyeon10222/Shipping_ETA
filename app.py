@@ -86,8 +86,8 @@ with st.sidebar:
     # ── 데이터 범위 선택 ──
     data_mode = st.radio(
         "📡 데이터 범위",
-        ["전체 선박 (느림)", "특정 MMSI 조회"],
-        index=1,   # 기본값: "특정 MMSI 조회" (두 번째 항목)
+        ["전체 선박", "특정 MMSI 조회"],
+        index=0,   # 기본값: "전체 선박" (첫 번째 항목)
     )
 
     # 특정 MMSI 입력 (data_mode가 "특정 MMSI 조회"일 때만)
@@ -124,7 +124,7 @@ def load_data(mode: str, mmsi: int = None):
     API에서 선박 데이터를 가져와 DataFrame으로 변환합니다.
 
     매개변수:
-        mode: "전체 선박 (느림)" 또는 "특정 MMSI 조회"
+        mode: "전체 선박" 또는 "특정 MMSI 조회"
         mmsi: 특정 MMSI 번호 (mode가 특정 MMSI일 때만 사용)
 
     반환값:
@@ -132,7 +132,14 @@ def load_data(mode: str, mmsi: int = None):
     """
     # Step 1-A: 위치 데이터 가져오기
     if mode == "특정 MMSI 조회" and mmsi:
-        loc_data = get_vessel_location(mmsi)  # 한 척만
+        try:
+            loc_data = get_vessel_location(mmsi)  # 한 척만
+        except Exception:
+            # 해당 MMSI가 존재하지 않으면(404) 전체 데이터로 대체
+            st.warning(
+                f"⚠️ MMSI {mmsi}를 찾을 수 없어 전체 선박 데이터를 불러옵니다."
+            )
+            loc_data = get_all_locations()
     else:
         loc_data = get_all_locations()        # 전체
 
